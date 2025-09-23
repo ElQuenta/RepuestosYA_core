@@ -1,0 +1,46 @@
+{
+  "name": "repuestosya_core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "prestart":"tsc",
+    "start": "node dist/index.js",
+    "migrate:make": "knex --knexfile ./data/knexfile.ts migrate:make",
+    "migrate:latest": "knex --knexfile ./data/knexfile.ts migrate:latest",
+    "migrate:rollback": "knex --knexfile ./data/knexfile.ts migrate:rollback",
+    "seed:make": "knex seed:make --knexfile ./data/knexfile.ts",
+    "seed:run": "knex seed:run --knexfile ./data/knexfile.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElQuenta/RepuestosYA_core.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElQuenta/RepuestosYA_core/issues"
+  },
+  "homepage": "https://github.com/ElQuenta/RepuestosYA_core#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "knex": "^3.1.0",
+    "multer": "^2.0.2",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.5.2",
+    "eslint": "^9.36.0",
+    "nodemon": "^3.1.10",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
