@@ -42,11 +42,11 @@ export async function up(knex: Knex): Promise<void> {
 
     .createTable(TABLE_ENTERPRISE_ACCOUNTS, function (table) {
       table.increments('id').primary();
-      table.string('NIT').notNullable().unique();
+      table.string('nit').notNullable().unique();
       table.string('address').notNullable();
       table.text('description');
       table.string('representant').notNullable();
-      table.string('representant_CI').notNullable();
+      table.string('representant_ci').notNullable();
       table.boolean('enabled').defaultTo(false);
       table
         .integer('account_id')

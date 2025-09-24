@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "prestart":"tsc",
+    "prestart": "tsc",
     "start": "node dist/index.js",
     "migrate:make": "knex --knexfile ./data/knexfile.ts migrate:make",
     "migrate:latest": "knex --knexfile ./data/knexfile.ts migrate:latest",
@@ -26,16 +26,21 @@
   },
   "homepage": "https://github.com/ElQuenta/RepuestosYA_core#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "joi": "^18.0.1",
+    "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
     "multer": "^2.0.2",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^24.5.2",
     "eslint": "^9.36.0",

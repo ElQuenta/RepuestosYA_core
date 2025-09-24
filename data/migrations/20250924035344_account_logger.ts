@@ -2,13 +2,13 @@ import type { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   await knex.raw(`
-  CREATE OR REPLACE PROCEDURE create_account_with_roles(
+  CREATE OR REPLACE FUNCTION create_account_with_roles(
     p_username text,
     p_email text,
     p_password text,
     p_cellphone_num text,
     p_roles integer[] DEFAULT ARRAY[]::integer[]
-  )
+  ) RETURNS integer
   LANGUAGE plpgsql
   AS $$
   DECLARE
@@ -46,6 +46,8 @@ export async function up(knex: Knex): Promise<void> {
 
     INSERT INTO account_log (account_id, action, metadata)
     VALUES (v_new_id, 'created', v_metadata);
+
+    RETURN v_new_id;
   END;
   $$;
   `);
@@ -179,6 +181,6 @@ export async function down(knex: Knex): Promise<void> {
     DROP FUNCTION IF EXISTS after_delete_account_log_if_no_metadata();
     DROP PROCEDURE IF EXISTS remove_role_from_account(integer, integer);
     DROP PROCEDURE IF EXISTS add_role_to_account(integer, integer);
-    DROP PROCEDURE IF EXISTS create_account_with_roles(text, text, text, text, integer[]);
+    DROP FUNCTION IF EXISTS create_account_with_roles(text, text, text, text, integer[]);
   `);
 }

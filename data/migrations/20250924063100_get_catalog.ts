@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
         p.stock,
         p.enterprise_id,
         (SELECT COALESCE(a.username, ea.representant) FROM enterprise_accounts ea LEFT JOIN accounts a ON a.id = ea.account_id WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_name,
-        (SELECT ea."NIT" FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
+        (SELECT ea.nit FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
         (SELECT COUNT(*) FROM account_saves s WHERE s.product_id = p.id) AS saves_count,
         (SELECT json_build_object('id', i.id, 'url', i.url)
          FROM images i
@@ -53,7 +53,7 @@ export async function up(knex: Knex): Promise<void> {
         p.stock,
         p.enterprise_id,
         (SELECT COALESCE(a.username, ea.representant) FROM enterprise_accounts ea LEFT JOIN accounts a ON a.id = ea.account_id WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_name,
-        (SELECT ea."NIT" FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
+        (SELECT ea.nit FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
         (SELECT COUNT(*) FROM account_saves s WHERE s.product_id = p.id) AS saves_count,
         (SELECT json_build_object('id', i.id, 'url', i.url)
          FROM images i
@@ -95,7 +95,7 @@ export async function up(knex: Knex): Promise<void> {
         p.stock,
         p.enterprise_id,
         (SELECT COALESCE(a.username, ea.representant) FROM enterprise_accounts ea LEFT JOIN accounts a ON a.id = ea.account_id WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_name,
-        (SELECT ea."NIT" FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
+        (SELECT ea.nit FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
         (SELECT COUNT(*) FROM account_saves s WHERE s.product_id = p.id) AS saves_count,
         (SELECT json_build_object('id', i.id, 'url', i.url)
          FROM images i
@@ -133,11 +133,11 @@ export async function up(knex: Knex): Promise<void> {
   AS $$
     SELECT json_build_object(
       'id', ea.id,
-      'nit', ea."NIT",
+      'nit', ea.nit,
       'address', ea.address,
       'description', ea.description,
       'representant', ea.representant,
-      'representant_CI', ea."representant_CI",
+      'representant_ci', ea.representant_ci,
       'account_id', ea.account_id,
       'name', COALESCE(a.username, ea.representant),
       'links', COALESCE((SELECT json_agg(json_build_object('id', el.id, 'name', el.name, 'link', el.link)) FROM external_links el WHERE el.enterprise_id = ea.id), '[]'::json),
@@ -193,7 +193,7 @@ export async function up(knex: Knex): Promise<void> {
         p.stock,
         p.enterprise_id,
         (SELECT COALESCE(a.username, ea.representant) FROM enterprise_accounts ea LEFT JOIN accounts a ON a.id = ea.account_id WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_name,
-        (SELECT ea."NIT" FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
+        (SELECT ea.nit FROM enterprise_accounts ea WHERE ea.id = p.enterprise_id LIMIT 1) AS enterprise_nit,
         (SELECT COUNT(*) FROM account_saves s WHERE s.product_id = p.id) AS saves_count,
         (SELECT json_build_object('id', i.id, 'url', i.url)
          FROM images i

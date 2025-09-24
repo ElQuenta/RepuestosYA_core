@@ -24,6 +24,9 @@ const config = {
     port: Number(process.env.DB_PORT) || 5466,
     ssl: parseBool(process.env.SSL),
   },
+  jwt: {
+    tokenSecret: process.env.TOKEN_SECRET || 'yourSecretKey',
+  },
   allowedOrigins: [],
 };
 

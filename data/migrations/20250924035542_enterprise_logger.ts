@@ -24,7 +24,7 @@ export async function up(knex: Knex): Promise<void> {
     END IF;
 
     INSERT INTO enterprise_accounts
-      (nit, address, description, representant, representant_CI, enabled, account_id)
+      (nit, address, description, representant, representant_ci, enabled, account_id)
     VALUES
       (p_NIT, p_address, p_description, p_representant, p_representant_CI, true, p_account_id)
     RETURNING id INTO v_new_id;
