@@ -1,7 +1,8 @@
 version: '3.9'
 
 services: 
-  db:
+  postgres:
+    container_name: RepuestosYA
     image: postgres:12-alpine
     environment:
       POSTGRES_USER: ${DB_USER}
