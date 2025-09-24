@@ -1,12 +1,10 @@
 import { FullUserResponse, CreateEnterpriseWithAccountParams, CreateAccountWithRolesParams } from "../dtos/authDTOS";
-import { buildLogger } from "../utils/logger";
 import db from "./db";
 
-const GET_USER_BY_EMAIL = "get_user_full_by_email";
 
 export const get_user_by_email = async (email: string): Promise<FullUserResponse | null> => {
   try {
-    const raw = await db.raw(`SELECT ${GET_USER_BY_EMAIL}(?) as data`, [email]);
+    const raw = await db.raw(`SELECT get_user_full_by_email(?) as data`, [email]);
 
     const rows = (raw && (raw.rows ?? raw[0])) as any[] | undefined;
     const data = rows && rows[0] ? rows[0].data : null;
