@@ -1,4 +1,3 @@
-// src/config/index.ts
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -23,6 +22,9 @@ const config = {
     password: process.env.DB_PASSWORD || 'pass123',
     port: Number(process.env.DB_PORT) || 5466,
     ssl: parseBool(process.env.SSL),
+  },
+  jwt: {
+    tokenSecret: process.env.TOKEN_SECRET || 'yourSecretKey',
   },
   allowedOrigins: [],
 };

@@ -20,10 +20,10 @@ export async function seed(knex: Knex): Promise<void> {
   ]);
 
   await knex(TABLE_ACCOUNTS).insert([
-    { id: 1, username: "usuario1", email: "user1@mail.com", password: "pass1", cellphone_num: "70000001" }, // user simple
-    { id: 2, username: "adminuser", email: "adminuser@mail.com", password: "pass2", cellphone_num: "70000002" }, // admin + user
-    { id: 3, username: "adminsolo", email: "admin@mail.com", password: "pass3", cellphone_num: "70000003" }, // admin puro
-    { id: 4, username: "empresa1", email: "empresa@mail.com", password: "pass4", cellphone_num: "70000004" }, // empresa
+    { id: 1, username: "usuario1", email: "user1@mail.com", password: "$2b$10$9Jd14rpouKY5SbPPRKcwXusjqdfivtgmnI0YLvDJy5oFSICdwDb1K", cellphone_num: "70000001" }, // user simple
+    { id: 2, username: "adminuser", email: "adminuser@mail.com", password: "$2b$10$9Jd14rpouKY5SbPPRKcwXusjqdfivtgmnI0YLvDJy5oFSICdwDb1K", cellphone_num: "70000002" }, // admin + user
+    { id: 3, username: "adminsolo", email: "admin@mail.com", password: "$2b$10$9Jd14rpouKY5SbPPRKcwXusjqdfivtgmnI0YLvDJy5oFSICdwDb1K", cellphone_num: "70000003" }, // admin puro
+    { id: 4, username: "empresa1", email: "empresa@mail.com", password: "$2b$10$9Jd14rpouKY5SbPPRKcwXusjqdfivtgmnI0YLvDJy5oFSICdwDb1K", cellphone_num: "70000004" }, // empresa
   ]);
 
   await knex(TABLE_ACCOUNT_ROLES).insert([
