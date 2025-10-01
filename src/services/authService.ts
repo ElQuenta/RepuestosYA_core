@@ -1,7 +1,7 @@
 import {
   LoginResult, RegisterAccountDTO, RegisterAccountResult,
   RegisterEnterpriseAccountDTO, RegisterEnterpriseResult
-} from '../dtos/authDTOS';
+} from '../dtos/authDTOs';
 import * as AuthRepository from '../repositories/authRepository';
 import * as AuthenticationService from './authenticationService';
 import { generateToken } from '../utils/jwtUtility';

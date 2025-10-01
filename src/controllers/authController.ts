@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as AuthService from "../services/authService";
-import { RegisterAccountDTO, RegisterEnterpriseAccountDTO } from "../dtos/authDTOS";
+import { RegisterAccountDTO, RegisterEnterpriseAccountDTO } from "../dtos/authDTOs";
 
 export const registerEnterpriseAccount = async (req: Request, res: Response) => {
   try {

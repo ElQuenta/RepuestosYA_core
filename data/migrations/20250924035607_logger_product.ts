@@ -109,6 +109,7 @@ export async function up(knex: Knex): Promise<void> {
       p_price numeric DEFAULT 0,
       p_category_ids integer[] DEFAULT ARRAY[]::integer[],
       p_car_model_ids integer[] DEFAULT ARRAY[]::integer[],
+      p_brand_ids integer[] DEFAULT ARRAY[]::integer[],
       p_images json DEFAULT '[]'::json
     ) RETURNS json AS $$
     DECLARE
@@ -122,6 +123,7 @@ export async function up(knex: Knex): Promise<void> {
       v_metadata json;
       v_cat_id integer;
       v_car_id integer;
+      v_brand_id integer;
       v_img json;
       v_img_id integer;
       v_img_url text;
@@ -130,8 +132,8 @@ export async function up(knex: Knex): Promise<void> {
         RAISE EXCEPTION 'Enterprise account % does not exist', p_enterprise_id;
       END IF;
 
-      INSERT INTO products (name, stock, price, enterprise_id, created_at, updated_at)
-        VALUES (p_name, p_stock, p_price, p_enterprise_id, now(), now())
+      INSERT INTO products (name, stock, price, enterprise_id)
+        VALUES (p_name, p_stock, p_price, p_enterprise_id)
       RETURNING id INTO v_product_id;
 
       IF array_length(p_category_ids,1) IS NOT NULL THEN
@@ -140,8 +142,8 @@ export async function up(knex: Knex): Promise<void> {
             RAISE EXCEPTION 'Product category % does not exist', v_cat_id;
           END IF;
 
-          INSERT INTO product_category_rel (product_id, category_id, created_at, updated_at)
-          VALUES (v_product_id, v_cat_id, now(), now())
+          INSERT INTO product_category_rel (product_id, category_id)
+          VALUES (v_product_id, v_cat_id)
           ON CONFLICT DO NOTHING;
         END LOOP;
       END IF;
@@ -152,8 +154,20 @@ export async function up(knex: Knex): Promise<void> {
             RAISE EXCEPTION 'Car model % does not exist', v_car_id;
           END IF;
 
-          INSERT INTO product_car_models (product_id, car_model_id, created_at, updated_at)
-          VALUES (v_product_id, v_car_id, now(), now())
+          INSERT INTO product_car_models (product_id, car_model_id)
+          VALUES (v_product_id, v_car_id)
+          ON CONFLICT DO NOTHING;
+        END LOOP;
+      END IF;
+
+      IF array_length(p_brand_ids,1) IS NOT NULL THEN
+        FOREACH v_brand_id IN ARRAY p_brand_ids LOOP
+          IF NOT EXISTS (SELECT 1 FROM brands WHERE id = v_brand_id) THEN
+            RAISE EXCEPTION 'Brand % does not exist', v_brand_id;
+          END IF;
+
+          INSERT INTO product_brands (product_id, brand_id)
+          VALUES (v_product_id, v_brand_id)
           ON CONFLICT DO NOTHING;
         END LOOP;
       END IF;
@@ -172,13 +186,13 @@ export async function up(knex: Knex): Promise<void> {
               IF v_img_url IS NULL OR trim(v_img_url) = '' THEN
                 RAISE EXCEPTION 'Image object must contain "id" or non-empty "url"';
               END IF;
-              INSERT INTO images (url, created_at, updated_at)
-                VALUES (v_img_url, now(), now())
+              INSERT INTO images (url)
+                VALUES (v_img_url)
               RETURNING id INTO v_img_id;
             END IF;
 
-            INSERT INTO product_images (product_id, image_id, created_at, updated_at)
-            VALUES (v_product_id, v_img_id, now(), now())
+            INSERT INTO product_images (product_id, image_id)
+            VALUES (v_product_id, v_img_id)
             ON CONFLICT DO NOTHING;
 
           EXCEPTION WHEN others THEN
@@ -226,8 +240,10 @@ export async function up(knex: Knex): Promise<void> {
       IF NOT EXISTS (SELECT 1 FROM products WHERE id = p_product_id) THEN
         RAISE EXCEPTION 'Product % does not exist', p_product_id;
       END IF;
-      IF NOT EXISTS (SELECT 1 FROM enterprise_accounts WHERE id = p_enterprise_id) THEN
-        RAISE EXCEPTION 'Enterprise account % does not exist', p_enterprise_id;
+      IF p_enterprise_id IS NOT NULL THEN
+        IF NOT EXISTS (SELECT 1 FROM enterprise_accounts WHERE id = p_enterprise_id) THEN
+          RAISE EXCEPTION 'Enterprise account % does not exist', p_enterprise_id;
+        END IF;
       END IF;
 
       UPDATE products
@@ -372,8 +388,8 @@ export async function up(knex: Knex): Promise<void> {
         RAISE EXCEPTION 'Car model % does not exist', p_car_model_id;
       END IF;
 
-      INSERT INTO product_car_models (product_id, car_model_id, created_at, updated_at)
-      VALUES (p_product_id, p_car_model_id, now(), now())
+      INSERT INTO product_car_models (product_id, car_model_id)
+      VALUES (p_product_id, p_car_model_id)
       ON CONFLICT DO NOTHING;
 
       SELECT get_product_json(p_product_id) INTO v_product_json;
@@ -438,8 +454,8 @@ export async function up(knex: Knex): Promise<void> {
         RAISE EXCEPTION 'Product category % does not exist', p_category_id;
       END IF;
 
-      INSERT INTO product_category_rel (product_id, category_id, created_at, updated_at)
-      VALUES (p_product_id, p_category_id, now(), now())
+      INSERT INTO product_category_rel (product_id, category_id)
+      VALUES (p_product_id, p_category_id)
       ON CONFLICT DO NOTHING;
 
       SELECT get_product_json(p_product_id) INTO v_product_json;

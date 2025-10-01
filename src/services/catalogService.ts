@@ -1,5 +1,5 @@
 import * as CatalogRepository from '../repositories/catalogRepository'
-import { CatalogByEnterpriseResult, ProductCatalogItemDTO } from '../dtos/catalogDTOS';
+import { CatalogByEnterpriseResult, ProductCatalogItemDTO } from '../dtos/catalogDTOs';
 
 export const get_catalog = async (): Promise<ProductCatalogItemDTO[]> => {
   return await CatalogRepository.get_catalog();
