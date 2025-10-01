@@ -198,6 +198,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.raw(`
     CREATE OR REPLACE FUNCTION update_enterprise_account(
       p_enterprise_id integer,
+      p_enabled boolean DEFAULT NULL,
       p_NIT text DEFAULT NULL,
       p_address text DEFAULT NULL,
       p_description text DEFAULT NULL,
@@ -223,6 +224,7 @@ export async function up(knex: Knex): Promise<void> {
         nit = COALESCE(p_NIT, nit),
         address = COALESCE(p_address, address),
         description = COALESCE(p_description, description),
+        enabled = COALESCE(p_enabled, enabled),
         representant = COALESCE(p_representant, representant),
         representant_CI = COALESCE(p_representant_CI, representant_CI),
         account_id = COALESCE(p_account_id, account_id)
