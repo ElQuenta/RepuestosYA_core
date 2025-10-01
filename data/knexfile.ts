@@ -1,4 +1,3 @@
-// knexfile.ts (en la raíz del proyecto)
 import connection from '../src/config/connection';
 
 const knexConfig = {

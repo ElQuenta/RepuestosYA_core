@@ -20,6 +20,7 @@ export async function up(knex: Knex): Promise<void> {
       table.increments('id').primary();
       table.string('name').notNullable();
       table.integer('stock').notNullable().defaultTo(0);
+      table.decimal('price', 10, 2).notNullable();
       table
         .integer('enterprise_id')
         .unsigned()
@@ -106,12 +107,12 @@ export async function up(knex: Knex): Promise<void> {
         .inTable(TABLE_PRODUCTS)
         .onDelete('CASCADE');
       table
-        .integer('branch_id')
+        .integer('brand_id')
         .unsigned()
         .references('id')
         .inTable(TABLE_BRANDS)
         .onDelete('CASCADE');
-      table.primary(['product_id', 'branch_id']);
+      table.primary(['product_id', 'brand_id']);
       table.timestamps(true, true);
     })
 

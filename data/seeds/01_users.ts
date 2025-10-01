@@ -35,7 +35,7 @@ export async function seed(knex: Knex): Promise<void> {
   ]);
 
   await knex(TABLE_ENTERPRISE_ACCOUNTS).insert([
-    { id: 1, NIT: "123456789", address: "Av. Principal 123", description: "Venta de autopartes", representant: "Juan Perez", representant_CI: "CI12345", enabled: true, account_id: 4 },
+    { id: 1, nit: "123456789", address: "Av. Principal 123", description: "Venta de autopartes", representant: "Juan Perez", representant_ci: "CI12345", enabled: true, account_id: 4 },
   ]);
 
   await knex(TABLE_EXTERNAL_LINKS).insert([
