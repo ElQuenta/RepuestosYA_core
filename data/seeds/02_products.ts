@@ -45,12 +45,12 @@ export async function seed(knex: Knex): Promise<void> {
   ]);
 
   await knex(TABLE_PRODUCTS).insert([
-    { id: 1, name: "Filtro de aceite", stock: 50, enterprise_id: 1},
-    { id: 2, name: "Pastillas de freno", stock: 100, enterprise_id: 1},
-    { id: 3, name: "Amortiguador delantero", stock: 30, enterprise_id: 1},
-    { id: 4, name: "Parachoques", stock: 20, enterprise_id: 1},
-    { id: 5, name: "Caja de cambios", stock: 10, enterprise_id: 1},
-    { id: 6, name: "Aceite sintético 5W-30", stock: 75, enterprise_id: 1},
+    { id: 1, name: "Filtro de aceite", stock: 50, price: 20, enterprise_id: 1 },
+    { id: 2, name: "Pastillas de freno", stock: 100, price: 20, enterprise_id: 1 },
+    { id: 3, name: "Amortiguador delantero", stock: 30, price: 20, enterprise_id: 1 },
+    { id: 4, name: "Parachoques", stock: 20, price: 20, enterprise_id: 1 },
+    { id: 5, name: "Caja de cambios", stock: 10, price: 20, enterprise_id: 1 },
+    { id: 6, name: "Aceite sintético 5W-30", stock: 75, price: 20, enterprise_id: 1 },
   ]);
 
   await knex(TABLE_IMAGES).insert([
@@ -78,9 +78,10 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(TABLE_PRODUCT_CATEGORY_REL).insert([
     { product_id: 1, category_id: 1 },
     { product_id: 2, category_id: 3 },
+    { product_id: 2, category_id: 1 },
     { product_id: 3, category_id: 2 },
-    { product_id: 4, category_id: 5 }, 
-    { product_id: 5, category_id: 4 }, 
+    { product_id: 4, category_id: 5 },
+    { product_id: 5, category_id: 4 },
     { product_id: 6, category_id: 1 },
   ]);
 
@@ -95,11 +96,11 @@ export async function seed(knex: Knex): Promise<void> {
   ]);
 
   await knex(TABLE_PRODUCT_BRANDS).insert([
-    { product_id: 1, branch_id: 1 },
-    { product_id: 2, branch_id: 1 },
-    { product_id: 3, branch_id: 2 },
-    { product_id: 4, branch_id: 2 },
-    { product_id: 5, branch_id: 1 },
-    { product_id: 6, branch_id: 1 },
+    { product_id: 1, brand_id: 1 },
+    { product_id: 2, brand_id: 1 },
+    { product_id: 3, brand_id: 2 },
+    { product_id: 4, brand_id: 2 },
+    { product_id: 5, brand_id: 1 },
+    { product_id: 6, brand_id: 1 },
   ]);
 }
