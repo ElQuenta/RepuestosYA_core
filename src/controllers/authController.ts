@@ -1,15 +1,21 @@
 import { Request, Response } from "express";
 import * as AuthService from "../services/authService";
 import { RegisterAccountDTO, RegisterEnterpriseAccountDTO } from "../dtos/authDTOs";
+import { handleError } from "../handlers/errorHandler";
+import { sendCreated, sendSuccess } from '../handlers/successHandler';
 
 export const registerEnterpriseAccount = async (req: Request, res: Response) => {
   try {
     const data: RegisterEnterpriseAccountDTO = req.body;
     const result = await AuthService.registerEnterpriseAccount(data);
-    res.status(201).json(result);
+    sendCreated(res, result, "Enterprise account created successfully");
   } catch (error) {
-    console.error("Error in registerEnterpriseAccount:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -17,10 +23,14 @@ export const registerAccount = async (req: Request, res: Response) => {
   try {
     const data: RegisterAccountDTO = req.body;
     const result = await AuthService.registerAccount(data);
-    res.status(201).json(result);
+    sendCreated(res, result, "Account created successfully");
   } catch (error) {
-    console.error("Error in registerEnterpriseAccount:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -28,9 +38,13 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const result = await AuthService.login(email, password);
-    res.status(200).json(result);
+    sendSuccess(res, result, "Login successful");
   } catch (error) {
-    console.error("Error in login:", error);
-    res.status(401).json({ error: "Unauthorized" });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };

@@ -1,28 +1,38 @@
 import { Request, Response } from "express";
 import { CatalogByEnterpriseResult, ProductCatalogItemDTO } from '../dtos/catalogDTOs';
 import * as CatalogService from '../services/catalogService';
+import { handleError } from '../handlers/errorHandler';
+import { sendSuccess } from "../handlers/successHandler";
+import { NotFoundError } from "../errors/commonErrors";
 
 export const get_catalog = async (req: Request, res: Response): Promise<void> => {
   try {
     const catalog = await CatalogService.get_catalog();
-    res.json(catalog);
+    sendSuccess(res, catalog, "Catalog fetched successfully");
   } catch (error) {
-    console.error('Error fetching catalog:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 }
 export const get_catalog_by_id = async (req: Request, res: Response): Promise<void> => {
   const productId = Number(req.params.id);
   try {
     const catalogItem = await CatalogService.get_catalog_by_id(productId);
-    if (catalogItem) {
-      res.json(catalogItem);
-    } else {
-      res.status(404).json({ error: 'Catalog item not found' });
+    if (!catalogItem) {
+      throw new NotFoundError(`Catalog item with ID ${productId} not found`);
     }
+    sendSuccess(res, catalogItem, "Catalog item fetched successfully");
   } catch (error) {
-    console.error('Error fetching catalog by ID:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 }
 
@@ -30,10 +40,14 @@ export const get_catalog_by_category = async (req: Request, res: Response): Prom
   const categoryId = Number(req.params.categoryId);
   try {
     const catalogItems = await CatalogService.get_catalog_by_category(categoryId);
-    res.json(catalogItems);
+    sendSuccess(res, catalogItems, "Catalog items fetched successfully");
   } catch (error) {
-    console.error('Error fetching catalog by category:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 }
 
@@ -42,10 +56,14 @@ export const get_catalog_n_by_category = async (req: Request, res: Response): Pr
   const n = Number(req.params.n);
   try {
     const catalogItems = await CatalogService.get_catalog_n_by_category(categoryId, n);
-    res.json(catalogItems);
+    sendSuccess(res, catalogItems, "Catalog items fetched successfully");
   } catch (error) {
-    console.error('Error fetching catalog by category:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 }
 
@@ -53,9 +71,13 @@ export const get_catalog_by_enterprise = async (req: Request, res: Response): Pr
   const enterpriseId = Number(req.params.enterpriseId);
   try {
     const catalog = await CatalogService.get_catalog_by_enterprise(enterpriseId);
-    res.json(catalog);
+    sendSuccess(res, catalog, "Catalog fetched successfully");
   } catch (error) {
-    console.error('Error fetching catalog by enterprise:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 }

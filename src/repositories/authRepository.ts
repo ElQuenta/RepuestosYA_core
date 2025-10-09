@@ -1,6 +1,11 @@
-import { getAccountResult, RegisterAccountDTO, RegisterAccountResult,
-  RegisterEnterpriseAccountDTO, RegisterEnterpriseResult } from '../dtos/authDTOs';
+import {
+  getAccountResult, RegisterAccountDTO, RegisterAccountResult,
+  RegisterEnterpriseAccountDTO, RegisterEnterpriseResult
+} from '../dtos/authDTOs';
 import db from './db';
+import { ConflictError } from '../errors/commonErrors'
+import { AuthenticationError } from '../errors/authError';
+import { not } from 'joi';
 
 export const register_enterprise_account = async (data: RegisterEnterpriseAccountDTO): Promise<RegisterEnterpriseResult> => {
   const {
@@ -20,7 +25,7 @@ export const register_enterprise_account = async (data: RegisterEnterpriseAccoun
     );
 
     if (!res || !res.rows || res.rows.length === 0 || !res.rows[0].metadata) {
-      throw new Error('Failed to register enterprise account');
+      throw new ConflictError('Failed to register enterprise account');
     }
     const userData: RegisterEnterpriseResult = res.rows[0].metadata;
     return userData;
@@ -41,7 +46,7 @@ export const register_account = async (data: RegisterAccountDTO): Promise<Regist
       [username, email, password, cellphone, roles]
     );
     if (!res || !res.rows || res.rows.length === 0 || !res.rows[0].metadata) {
-      throw new Error('Failed to register account');
+      throw new ConflictError('Failed to register account');
     }
     return res.rows[0].metadata;
   } catch (err) {
@@ -57,7 +62,7 @@ export const get_account_by_email = async (email: string): Promise<getAccountRes
       [email]
     );
     if (!res || !res.rows || res.rows.length === 0 || !res.rows[0].metadata) {
-      throw new Error('Failed to get account by email');
+      throw new AuthenticationError('Account not found');
     }
     return res.rows[0].metadata;
   } catch (err) {

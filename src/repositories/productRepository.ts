@@ -1,5 +1,6 @@
 import db from './db';
 import { CreateProductDTO, CreateProductResponse, UpdateProductDTO, UpdateProductResponse } from '../dtos/productDTOs';
+import { ConflictError, BadRequestError } from '../errors/commonErrors';
 
 const TABLE_PRODUCTS = 'products';
 
@@ -16,7 +17,7 @@ export const create_product = async (productData: CreateProductDTO): Promise<Cre
       ]
     );
     if (!result || !result.rows || result.rows.length === 0 || !result.rows[0].metadata) {
-      throw new Error('Failed to create product');
+      throw new ConflictError('Failed to create product');
     }
     return result.rows[0].metadata;
   } catch (err) {
@@ -41,7 +42,7 @@ export const update_product = async (productData: UpdateProductDTO): Promise<Upd
       ]
     );
     if (!result || !result.rows || result.rows.length === 0 || !result.rows[0].metadata) {
-      throw new Error('Failed to update product');
+      throw new BadRequestError('Failed to update product');
     }
     return result.rows[0].metadata;
   } catch (err) {

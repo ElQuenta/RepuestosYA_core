@@ -1,5 +1,6 @@
 import db from './db';
 import { UpdateAccountDTO, UpdateEnterpriseDTO } from '../dtos/userDTOs';
+import { BadRequestError } from '../errors/commonErrors';
 
 export const updateAccount = async (data: UpdateAccountDTO) => {
   const { id, username, email, password, cellphone } = data;
@@ -9,7 +10,7 @@ export const updateAccount = async (data: UpdateAccountDTO) => {
       [id, username ? username : null, email ? email : null, password ? password : null, cellphone ? cellphone : null]
     );
     if (!result || !result.rows || result.rows.length === 0 || !result.rows[0].metadata) {
-      throw new Error('Failed to update account');
+      throw new BadRequestError('Failed to update account');
     }
     return result.rows[0].metadata;
   } catch (error) {
@@ -25,7 +26,7 @@ export const updateEnterprise = async (data: UpdateEnterpriseDTO) => {
       SELECT update_enterprise_account(?, ?, ?, ?, ?, ?, ?, ?) AS metadata;
       `, [id, enabled ? enabled : null, nit ? nit : null, address ? address : null, description ? description : null, representant ? representant : null, representantCi ? representantCi : null, accountId ? accountId : null]);
     if (!result || !result.rows || result.rows.length === 0 || !result.rows[0].metadata) {
-      throw new Error('Failed to update enterprise');
+      throw new BadRequestError('Failed to update enterprise');
     }
     return result.rows[0].metadata;
   } catch (error) {

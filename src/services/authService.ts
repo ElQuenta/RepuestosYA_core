@@ -5,6 +5,7 @@ import {
 import * as AuthRepository from '../repositories/authRepository';
 import * as AuthenticationService from './authenticationService';
 import { generateToken } from '../utils/jwtUtility';
+import { AuthenticationError } from '../errors/authError';
 
 export const registerEnterpriseAccount = async (data: RegisterEnterpriseAccountDTO): Promise<RegisterEnterpriseResult> => {
   const hashedPassword = await AuthenticationService.hashPassword(data.password);
@@ -19,15 +20,15 @@ export const registerAccount = async (data: RegisterAccountDTO): Promise<Registe
 export const login = async (email: string, password: string): Promise<LoginResult> => {
   const result = await AuthRepository.get_account_by_email(email);
   if (!result || !result.user) {
-    throw new Error('User not found');
+    throw new AuthenticationError('User not found');
   }
   if (!result.user.password) {
-    throw new Error('Password not set for user');
+    throw new AuthenticationError('Password not set for user');
   }
 
   const isValidPassword = await AuthenticationService.verifyPassword(password, result.user.password);
   if (!isValidPassword) {
-    throw new Error('Invalid password');
+    throw new AuthenticationError('Invalid password');
   }
 
   const token = generateToken(Number(result.user.id), result.user.roles.map(r => r.role));

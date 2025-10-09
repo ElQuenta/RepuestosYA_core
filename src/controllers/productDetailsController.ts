@@ -1,15 +1,21 @@
 import { Request, Response } from 'express';
 
 import * as DetailsService from '../services/productDetailsService';
+import { handleError } from '../handlers/errorHandler';
+import { sendSuccess, sendCreated, sendNoContent } from '../handlers/successHandler';
 
 export const create_car_model = async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
     const newCarModel = await DetailsService.create_car_model(name);
-    res.status(201).json(newCarModel);
+    sendCreated(res, newCarModel, "Car model created successfully");
   } catch (error) {
-    console.error('Error creating car model:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -17,29 +23,41 @@ export const create_brand = async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
     const newBrand = await DetailsService.create_brand(name);
-    res.status(201).json(newBrand);
+    sendCreated(res, newBrand, "Brand created successfully");
   } catch (error) {
-    console.error('Error creating brand:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 export const fetch_car_models = async (req: Request, res: Response) => {
   try {
     const carModels = await DetailsService.fetch_car_models();
-    res.json(carModels);
+    sendSuccess(res, carModels, "Car models fetched successfully");
   } catch (error) {
-    console.error('Error fetching car models:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
 export const fetch_brands = async (req: Request, res: Response) => {
   try {
     const brands = await DetailsService.fetch_brands();
-    res.json(brands);
+    sendSuccess(res, brands, "Brands fetched successfully");
   } catch (error) {
-    console.error('Error fetching brands:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -47,10 +65,14 @@ export const remove_car_model = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     await DetailsService.remove_car_model(Number(id));
-    res.sendStatus(204);
+    sendNoContent(res, "Car model removed successfully");
   } catch (error) {
-    console.error('Error removing car model:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -58,9 +80,13 @@ export const remove_brand = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     await DetailsService.remove_brand(Number(id));
-    res.sendStatus(204);
+    sendNoContent(res, "Brand removed successfully");
   } catch (error) {
-    console.error('Error removing brand:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };

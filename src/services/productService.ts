@@ -2,6 +2,7 @@ import { CreateProductDTO, CreateProductResponse, UpdateProductDTO, UpdateProduc
 import * as ProductRepository from '../repositories/productRepository';
 
 export const create_product = async (productData: CreateProductDTO): Promise<CreateProductResponse> => {
+  //TODO: Conectar a Firebase Storage para subir imagenes y obtener URLs
   return await ProductRepository.create_product(productData);
 }
 
@@ -14,6 +15,7 @@ export const delete_product = async (product_id: number): Promise<void> => {
 }
 
 export const add_product_image = async (product_id: number, image_url: string): Promise<void> => {
+  //TODO: Conectar a Firebase Storage para subir imagenes y obtener URLs
   return await ProductRepository.add_product_new_image(product_id, image_url);
 }
 

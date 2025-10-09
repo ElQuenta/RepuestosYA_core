@@ -1,46 +1,52 @@
 import { Request, Response } from "express";
 import * as ProductService from '../services/productService';
 import { CreateProductDTO, UpdateProductDTO } from "../dtos/productDTOs";
+import { handleError } from "../handlers/errorHandler";
+import { sendCreated, sendNoContent, sendSuccess } from "../handlers/successHandler";
 
 export const create_product = async (req: Request, res: Response): Promise<void> => {
   try {
     const productData: CreateProductDTO = req.body;
     const result = await ProductService.create_product(productData);
-    res.status(201).json(result);
+    sendCreated(res, result, "Product created successfully");
   } catch (error) {
-    console.error('Error creating product:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
 export const update_product = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-      res.status(400).json({ error: 'Invalid product ID' });
-      return;
-    }
     const productData: UpdateProductDTO = req.body;
     const result = await ProductService.update_product({ ...productData, id });
-    res.status(200).json(result);
+    sendSuccess(res, result, "Product updated successfully");
   } catch (error) {
-    console.error('Error updating product:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
 export const delete_product = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-      res.status(400).json({ error: 'Invalid product ID' });
-      return;
-    }
     await ProductService.delete_product(id);
-    res.status(204).send();
+    sendNoContent(res, "Product deleted successfully");
   } catch (error) {
-    console.error('Error deleting product:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -48,15 +54,15 @@ export const add_product_image = async (req: Request, res: Response): Promise<vo
   try {
     const product_id = parseInt(req.params.id, 10);
     const { image_url } = req.body;
-    if (isNaN(product_id) || !image_url) {
-      res.status(400).json({ error: 'Invalid input' });
-      return;
-    }
     const result = await ProductService.add_product_image(product_id, image_url);
-    res.status(204).json(result);
+    sendNoContent(res, "Product image added successfully");
   } catch (error) {
-    console.error('Error adding product image:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -64,15 +70,15 @@ export const remove_product_image = async (req: Request, res: Response): Promise
   try {
     const product_id = parseInt(req.params.id, 10);
     const image_id = parseInt(req.params.imageId, 10);
-    if (isNaN(product_id) || isNaN(image_id)) {
-      res.status(400).json({ error: 'Invalid input' });
-      return;
-    }
     const result = await ProductService.remove_product_image(image_id, product_id);
-    res.status(204).json(result);
+    sendNoContent(res, "Product image removed successfully");
   } catch (error) {
-    console.error('Error removing product image:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -80,15 +86,15 @@ export const add_product_category = async (req: Request, res: Response): Promise
   try {
     const product_id = parseInt(req.params.id, 10);
     const { category_id } = req.body;
-    if (isNaN(product_id) || !category_id) {
-      res.status(400).json({ error: 'Invalid input' });
-      return;
-    }
     const result = await ProductService.add_product_category(product_id, category_id);
-    res.status(204).json(result);
+    sendNoContent(res, "Product category added successfully");
   } catch (error) {
-    console.error('Error adding product category:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -96,15 +102,15 @@ export const remove_product_category = async (req: Request, res: Response): Prom
   try {
     const product_id = parseInt(req.params.id, 10);
     const category_id = parseInt(req.params.categoryId, 10);
-    if (isNaN(product_id) || isNaN(category_id)) {
-      res.status(400).json({ error: 'Invalid input' });
-      return;
-    }
     const result = await ProductService.remove_product_category(product_id, category_id);
-    res.status(204).json(result);
+    sendNoContent(res, "Product category removed successfully");
   } catch (error) {
-    console.error('Error removing product category:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -119,8 +125,12 @@ export const add_product_car_model = async (req: Request, res: Response): Promis
     const result = await ProductService.add_product_car_model(product_id, car_model_id);
     res.status(204).json(result);
   } catch (error) {
-    console.error('Error adding product car model:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
 
@@ -128,14 +138,14 @@ export const remove_product_car_model = async (req: Request, res: Response): Pro
   try {
     const product_id = parseInt(req.params.id, 10);
     const car_model_id = parseInt(req.params.carModelId, 10);
-    if (isNaN(product_id) || isNaN(car_model_id)) {
-      res.status(400).json({ error: 'Invalid input' });
-      return;
-    }
     const result = await ProductService.remove_product_car_model(product_id, car_model_id);
-    res.status(204).json(result);
+    sendNoContent(res, "Product car model removed successfully");
   } catch (error) {
-    console.error('Error removing product car model:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    if (!(error instanceof Error)) {
+      console.error("Unexpected error type:", error);
+      handleError(res, new Error("Unexpected error occurred"));
+    } else {
+      handleError(res, error);
+    }
   }
 };
