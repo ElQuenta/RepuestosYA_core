@@ -1,4 +1,4 @@
-import { CatalogByEnterpriseResult, ProductCatalogItemDTO } from '../dtos/catalogDTOS';
+import { CatalogByEnterpriseResult, ProductCatalogItemDTO } from '../dtos/catalogDTOs';
 import db from './db';
 
 export const get_catalog = async (): Promise<ProductCatalogItemDTO[]> => {

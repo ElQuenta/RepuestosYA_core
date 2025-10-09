@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CatalogByEnterpriseResult, ProductCatalogItemDTO } from '../dtos/catalogDTOS';
+import { CatalogByEnterpriseResult, ProductCatalogItemDTO } from '../dtos/catalogDTOs';
 import * as CatalogService from '../services/catalogService';
 
 export const get_catalog = async (req: Request, res: Response): Promise<void> => {

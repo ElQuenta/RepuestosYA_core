@@ -1,5 +1,5 @@
 import { getAccountResult, RegisterAccountDTO, RegisterAccountResult,
-  RegisterEnterpriseAccountDTO, RegisterEnterpriseResult } from '../dtos/authDTOS';
+  RegisterEnterpriseAccountDTO, RegisterEnterpriseResult } from '../dtos/authDTOs';
 import db from './db';
 
 export const register_enterprise_account = async (data: RegisterEnterpriseAccountDTO): Promise<RegisterEnterpriseResult> => {

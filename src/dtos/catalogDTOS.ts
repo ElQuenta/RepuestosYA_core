@@ -1,31 +1,5 @@
-import { User, Enterprise, ExternalLink } from './authDTOS';
-
-export interface ProductBasicDTO {
-  id: number;
-  name: string;
-  stock: number;
-  price: string | number;
-}
-
-export interface ProductCategoryDTO {
-  category_id: number;
-  name: string;
-}
-
-export interface ProductImageDTO {
-  image_id: number;
-  url: string;
-}
-
-export interface BrandDTO {
-  brand_id: number;
-  name: string;
-}
-
-export interface CarModelDTO {
-  car_id: number;
-  name: string;
-}
+import { User, Enterprise, ExternalLink } from './authDTOs';
+import { BrandDTO, CarModelDTO, ProductBasicDTO, ProductCategoryDTO, ProductImageDTO } from './productDTOs';
 
 export interface ProductCatalogItemDTO {
   product: ProductBasicDTO;
