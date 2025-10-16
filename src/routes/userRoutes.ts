@@ -1,14 +1,18 @@
 import { Router } from "express";
 import * as UserController from "../controllers/userController";
+import { validateParams } from "../middlewares/validateParams";
+import { validateBody } from "../middlewares/validateSchema";
+import { paramIdSchema } from "../middlewares/schemas/paramsSchema";
+import { updateAccountSchema, updateEnterpriseSchema } from "../middlewares/schemas/userSchemas";
 
 const router = Router();
 
 router.route("/account/:id")
-  .put(UserController.update_account)
-  .delete(UserController.delete_account);
+  .put(validateParams(paramIdSchema), validateBody(updateAccountSchema), UserController.update_account)
+  .delete(validateParams(paramIdSchema), UserController.delete_account);
 
 router.route("/enterprise/:id")
-  .put(UserController.update_enterprise);
+  .put(validateParams(paramIdSchema), validateBody(updateEnterpriseSchema), UserController.update_enterprise);
 
 router.route("/account/:accountId/role/:roleId")
   .post(UserController.add_role_to_account)

@@ -1,6 +1,8 @@
 import { Router } from "express";
 
 import * as ProductDetailsController from "../controllers/productDetailsController";
+import { validateParams } from "../middlewares/validateParams";
+import { paramIdSchema } from "../middlewares/schemas/paramsSchema";
 
 const router = Router();
 
@@ -13,9 +15,9 @@ router.route("/brand")
   .get(ProductDetailsController.fetch_brands);
 
 router.route("/car-model/:id")
-  .delete(ProductDetailsController.remove_car_model);
+  .delete(validateParams(paramIdSchema), ProductDetailsController.remove_car_model);
 
 router.route("/brand/:id")
-  .delete(ProductDetailsController.remove_brand);
+  .delete(validateParams(paramIdSchema), ProductDetailsController.remove_brand);
 
 export default router;
